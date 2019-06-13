@@ -1,61 +1,62 @@
 import requests
-rest_site = 'https://test-vaccinecodeset.cdc.gov/SymedicalDistributionREST/api/distributionext/'
-#rest_site = 'https://vaccinecodeset.cdc.gov/SymedicalDistributionREST/api/distributionext/'
-mnemonic = 'TEST_JDI_1'
-#mnemonic = 'AIRA_JDI'
+#rest_site = 'https://test-vaccinecodeset.cdc.gov/SymedicalDistributionREST/api/distributionext/'
+rest_site = 'https://vaccinecodeset.cdc.gov/SymedicalDistributionREST/api/distributionext/'
+#mnemonic = 'TEST_JDI_1'
+mnemonic = 'AIRA_JDI'
+#mnemonic = 'CA_DEV_TEST'
 response = requests.get(rest_site+'available/'+mnemonic)
 
-#print(response.text)
+print(response.text)
 
 package_uids = []
 for k in response.json()['PackageItems']:
     package_uids.append(k['PackageUID'])
+json = None
 
 for package_uid in package_uids:
     print(package_uid)
     json = {
-        "distributionGroupMnemonic": "TEST_JDI_1",
+        "distributionGroupMnemonic": mnemonic,
         "distributionPackageUID": package_uid,
-        "distributionNodeUID": "0e826259-5e5c-e911-85f9-3eb3d3152801",
+        #"distributionNodeUID": "0e826259-5e5c-e911-85f9-3eb3d3152801",
+        "distributionNodeUID": "2477d315-3d78-e911-85fc-4a5887b71b8c",
         "userName": "chris",
         "ApplyStateID": 2,
     }
 
     print("downloadstate")
     response = requests.post(
-        'https://test-vaccinecodeset.cdc.gov/SymedicalDistributionRESTTest/api/distributionext/downloadstate',
+        rest_site+'downloadstate',
         json=json,
     )
     print(response.json())
 
     print("unsubscribe")
     response = requests.post(
-        'https://test-vaccinecodeset.cdc.gov/SymedicalDistributionRESTTest/api/distributionext/unsubscribe',
+        rest_site+'unsubscribe',
         json=json,
     )
     print(response.json())
 
     print("applystate")
     response = requests.post(
-        'https://test-vaccinecodeset.cdc.gov/SymedicalDistributionRESTTest/api/distributionext/applystate',
+        rest_site+'applystate',
         json=json,
     )
     print(response.json())
 
     print("subscribe")
     response = requests.post(
-        'https://test-vaccinecodeset.cdc.gov/SymedicalDistributionRESTTest/api/distributionext/subscribe',
+        rest_site+'subscribe',
         json=json,
     )
     print(response.json())
 
-print("pending")
-response = requests.post(
-    #'https://test-vaccinecodeset.cdc.gov/SymedicalDistributionRESTTest/api/distributionext/pending/TEST_JDI_1',
-    'https://test-vaccinecodeset.cdc.gov/SymedicalDistributionREST/api/distributionext/pending/TEST_JDI_1',
-    json=json,
-)
-print(response.json())
-for pack in response.json()['Packages']:
-    print(pack.keys())
-    print(pack['PackageName'])
+if json:
+    print("pending")
+    response = requests.post(
+        #'https://test-vaccinecodeset.cdc.gov/SymedicalDistributionRESTTest/api/distributionext/pending/TEST_JDI_1',
+        rest_site+'pending/'+mnemonic,
+        json=json,
+    )
+    print(response.json())

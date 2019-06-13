@@ -1,8 +1,10 @@
 import requests
 import unittest
 
-rest_site = 'https://test-vaccinecodeset.cdc.gov/SymedicalDistributionREST/api/distributionext/'
-mnemonic = 'TEST_JDI_1'
+rest_site = 'https://vaccinecodeset.cdc.gov/SymedicalDistributionREST/api/distributionext/'
+mnemonic = 'AIRA_JDI'
+node_id = "2477d315-3d78-e911-85fc-4a5887b71b8c"
+test_package_id = "644fb061-5077-e911-a18a-0ecd7015b0a4"
 
 class TestSymedical(unittest.TestCase):
 
@@ -33,7 +35,7 @@ class TestSymedical(unittest.TestCase):
     def test_downloadstate(self):
         json = {
             "distributionGroupMnemonic": mnemonic,
-            "distributionPackageUID": "b554c854-ce66-e911-a18a-0e9e89df70ac",
+            "distributionPackageUID": test_package_id,
         }
         response = requests.post(
             rest_site+'downloadstate',
@@ -48,8 +50,8 @@ class TestSymedical(unittest.TestCase):
     def test_applystate(self):
         json = {
             "distributionGroupMnemonic": mnemonic,
-            "distributionNodeUID": "24cea19d-075b-e911-85f9-5ef1864b1132",
-            "distributionPackageUID": "b554c854-ce66-e911-a18a-0e9e89df70ac",
+            "distributionNodeUID": node_id,
+            "distributionPackageUID": test_package_id,
         }
         response = requests.post(
             rest_site+'applystate',
@@ -64,7 +66,7 @@ class TestSymedical(unittest.TestCase):
     def unsubscribe(self):
         json = {
             "distributionGroupMnemonic": mnemonic,
-            "distributionPackageUID": "b554c854-ce66-e911-a18a-0e9e89df70ac",
+            "distributionPackageUID": test_package_id,
             "userName": "chris"
         }
         response = requests.post(
@@ -80,8 +82,8 @@ class TestSymedical(unittest.TestCase):
     def subscribe(self):
         json = {
             "distributionGroupMnemonic": mnemonic,
-            "distributionNodeUID": "24cea19d-075b-e911-85f9-5ef1864b1132",
-            "distributionPackageUID": "b554c854-ce66-e911-a18a-0e9e89df70ac",
+            "distributionNodeUID": node_id,
+            "distributionPackageUID": test_package_id,
             "userName": "chris"
         }
         response = requests.post(
