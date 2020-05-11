@@ -18,6 +18,7 @@ class TestSymedical(unittest.TestCase):
         with open('fixtures/available.txt', 'r') as f:
             expected = f.read().strip()
         actual = response.text
+        print(actual)
         self.assertEqual(expected, actual)
         self.assertEqual(200, response.status_code)
 
@@ -29,6 +30,7 @@ class TestSymedical(unittest.TestCase):
         with open('fixtures/pending.txt', 'r') as f:
             expected = f.read().strip()
         actual = response.text
+        print(actual)
         self.assertEqual(expected, actual)
         self.assertEqual(200, response.status_code)
 
